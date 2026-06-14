@@ -1,0 +1,4 @@
+.claude/
+memory/
+.playwright-mcp/
+test-checked-state.png
