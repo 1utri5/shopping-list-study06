@@ -195,7 +195,7 @@
     const SUPABASE_URL = "https://hccirrkcsqyfzfxwoedv.supabase.co";
     const SUPABASE_KEY = "sb_publishable_g-TPoGxnNP89p-zU9RzgOQ_JAKYQm9d";
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const TABLE = "shopping_items";
 
     const itemInput = document.getElementById("itemInput");
@@ -207,7 +207,7 @@
     let items = [];
 
     async function load() {
-      const { data, error } = await supabase
+      const { data, error } = await sb
         .from(TABLE)
         .select("*")
         .order("created_at", { ascending: true });
@@ -224,7 +224,7 @@
       if (!text) return;
       itemInput.value = "";
       itemInput.focus();
-      const { data, error } = await supabase
+      const { data, error } = await sb
         .from(TABLE)
         .insert({ text, checked: false })
         .select()
@@ -238,7 +238,7 @@
     }
 
     async function deleteItem(id) {
-      const { error } = await supabase.from(TABLE).delete().eq("id", id);
+      const { error } = await sb.from(TABLE).delete().eq("id", id);
       if (error) {
         console.error("삭제 실패:", error);
         return;
@@ -251,7 +251,7 @@
       const item = items.find(item => item.id === id);
       if (!item) return;
       const checked = !item.checked;
-      const { error } = await supabase
+      const { error } = await sb
         .from(TABLE)
         .update({ checked })
         .eq("id", id);
@@ -264,7 +264,7 @@
     }
 
     async function clearChecked() {
-      const { error } = await supabase
+      const { error } = await sb
         .from(TABLE)
         .delete()
         .eq("checked", true);
